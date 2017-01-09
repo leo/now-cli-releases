@@ -2,14 +2,16 @@
 
 Microservices for caching and exposing the [releases of Now CLI](https://github.com/zeit/now-cli/releases).
 
-## How to run
+## Usage
+
+Simply install the dependencies:
+
+```bash
+npm install
+```
+
+And run the server:
 
 ```bash
 npm start
 ```
-
-## API
-
-### GET /
-
-**200**: Returns a list of releases
