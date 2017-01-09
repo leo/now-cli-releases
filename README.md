@@ -1,6 +1,6 @@
 # now-cli-releases
 
-Microservice to cache and expose GitHub releases of zeit/now-cli.
+Microservices for caching and exposing the [releases of Now CLI](https://github.com/zeit/now-cli/releases).
 
 ## How to run
 
