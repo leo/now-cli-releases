@@ -15,3 +15,7 @@ And run the server:
 ```bash
 npm start
 ```
+
+## Author
+
+- Leo Lamprecht ([@notquiteleo](https://twitter.com/notquiteleo)) - [▲ZEIT](https://zeit.co)
