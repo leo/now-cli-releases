@@ -8,7 +8,10 @@
   "xo": {
     "esnext": true,
     "space": true,
-    "semicolon": false
+    "semicolon": false,
+    "rules": {
+      "camelcase": 0
+    }
   },
   "dependencies": {
     "micro": "^6.1.0",

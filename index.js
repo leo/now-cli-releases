@@ -28,6 +28,28 @@ function slack(text, id) {
   })
 }
 
+function platformFromName(name) {
+  if (/\.dmg$/.test(name)) {
+    return 'macOS DMG'
+  } else if (/\.AppImage$/.test(name)) {
+    return 'AppImage'
+  } else if (/\.rpm$/.test(name)) {
+    return 'Fedora/RedHat'
+  } else if (/\.deb$/.test(name)) {
+    return 'Ubuntu/Debian'
+  } else if (/\blinux\b/.test(name)) {
+    return 'Linux'
+  } else if (/\bmacos\b/.test(name) || /\bmac\b/.test(name)) {
+    if (/\.zip$/.test(name)) {
+      return 'macOS Zip'
+    }
+    return 'macOS'
+  } else if (/\.exe$/.test(name)) {
+    return 'Windows'
+  }
+  return 'Others'
+}
+
 function cacheData() {
   const start = Date.now()
   fetch('https://api.github.com/repos/zeit/now-cli/releases/latest', {
@@ -45,7 +67,16 @@ function cacheData() {
     if (!data_) {
       return
     }
-    data = data_
+
+    data = {
+      tag: data_.tag_name,
+      url: data_.html_url,
+      assets: data_.assets.map(({name, browser_download_url}) => ({
+        name,
+        platform: platformFromName(name),
+        url: browser_download_url
+      }))
+    }
 
     log(`Re-built now releases cache. ` +
         `Elapsed: ${(new Date() - start)}ms`)
