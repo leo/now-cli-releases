@@ -1,6 +1,7 @@
 {
   "name": "now-cli-latest",
   "private": true,
+  "version": "1.0.0",
   "scripts": {
     "start": "micro",
     "test": "xo"
