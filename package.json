@@ -1,5 +1,5 @@
 {
-  "name": "zeit-now-releases",
+  "name": "now-cli-latest",
   "private": true,
   "scripts": {
     "start": "micro",

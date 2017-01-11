@@ -1,10 +1,10 @@
-# now-cli-releases
+# now-cli-latest
 
-[![Build Status](https://travis-ci.com/zeit/now-cli-releases.svg?token=CPbpm6MRBVbWVmDFaLxs&branch=master)](https://travis-ci.com/zeit/now-cli-releases)
+[![Build Status](https://travis-ci.com/zeit/now-cli-latest.svg?token=CPbpm6MRBVbWVmDFaLxs&branch=master)](https://travis-ci.com/zeit/now-cli-latest)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![Slack Channel](https://zeit-slackin.now.sh/badge.svg)](https://zeit.chat)
 
-Microservices for caching and exposing the [releases of Now CLI](https://github.com/zeit/now-cli/releases). It's being used inside of [Now Desktop](https://github.com/zeit/now-desktop) to get the latest version of the CLI in the beginning and for auto updates (and on the homepage).
+Microservices for caching and exposing the [latest release of Now CLI](https://github.com/zeit/now-cli/releases/latest). It's being used inside of [Now Desktop](https://github.com/zeit/now-desktop) to get the latest version of the CLI in the beginning and for auto updates (and on the homepage).
 
 ## Usage
 
