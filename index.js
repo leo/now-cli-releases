@@ -38,7 +38,9 @@ function platformFromName(name) {
   } else if (/\.deb$/.test(name)) {
     return 'Ubuntu/Debian'
   } else if (/\blinux\b/.test(name)) {
-    return 'Linux'
+    return 'Linux (glibc)'
+  } else if (/\balpine\b/.test(name)) {
+    return 'Alpine (musl)'
   } else if (/\bmacos\b/.test(name) || /\bmac\b/.test(name)) {
     if (/\.zip$/.test(name)) {
       return 'macOS Zip'
