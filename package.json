@@ -18,11 +18,11 @@
     "alias": "now-cli-latest.now.sh"
   },
   "dependencies": {
-    "micro": "^6.1.0",
-    "ms": "^0.7.2",
-    "node-fetch": "^1.6.3"
+    "micro": "6.1.0",
+    "ms": "0.7.2",
+    "node-fetch": "1.6.3"
   },
   "devDependencies": {
-    "xo": "^0.17.1"
+    "xo": "0.17.1"
   }
 }
