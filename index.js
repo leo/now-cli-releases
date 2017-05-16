@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   return data
 }
 
-// cache data now and every X ms
+// Cache data now and every X ms
 cacheData()
 setInterval(cacheData, ms('15m'))
 
