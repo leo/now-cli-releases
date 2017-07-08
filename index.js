@@ -74,7 +74,7 @@ function cacheData() {
     data = {
       tag: data_.tag_name,
       url: data_.html_url,
-      assets: data_.assets.map(({name, browser_download_url}) => ({
+      assets: data_.assets.map(({name}) => ({
         name,
         platform: platformFromName(name),
         url: `https://cdn.zeit.co/releases/now-cli/${data_.tag_name}/${name}`
