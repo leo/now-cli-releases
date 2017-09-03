@@ -67,7 +67,7 @@ function cacheData() {
     return res.json()
   })
   .then(data_ => {
-    if (!data_) {
+    if (!data_ || data_.prerelease) {
       return
     }
 
