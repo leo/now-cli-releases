@@ -1,5 +1,5 @@
 {
-  "name": "now-cli-latest",
+  "name": "now-cli-releases",
   "private": true,
   "version": "2.1.4",
   "scripts": {
@@ -16,7 +16,7 @@
     }
   },
   "now": {
-    "alias": "now-cli-latest.zeit.sh"
+    "alias": "now-cli-releases.zeit.sh"
   },
   "dependencies": {
     "micro": "9.0.0",
