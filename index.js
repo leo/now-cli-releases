@@ -2,34 +2,28 @@
 const fetch = require('node-fetch')
 const ms = require('ms')
 
-let data = []
+// This is where we're keeping the cached
+// releases in the RAM
+const cache = {}
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET')
-  return data
+
+  return cache
 }
 
-// Cache data now and every X ms
-cacheData()
-setInterval(cacheData, ms('15m'))
-
-function log(text) {
-  return slack(text, process.env.TOKEN_EVENTS)
-}
-
-function logError(text) {
-  return slack(text, process.env.TOKEN_ALERTS)
-}
-
-function slack(text, id) {
+const slack = (text, id) => {
   fetch(`https://hooks.slack.com/services/${id}`, {
     method: 'POST',
     body: JSON.stringify({text})
   })
 }
 
-function platformFromName(name) {
+const log = text => slack(text, process.env.TOKEN_EVENTS)
+const logError = text => slack(text, process.env.TOKEN_ALERTS)
+
+const platformFromName = name => {
   if (/\.dmg$/.test(name)) {
     return 'macOS DMG'
   } else if (/\.AppImage$/.test(name)) {
@@ -46,45 +40,67 @@ function platformFromName(name) {
     if (/\.zip$/.test(name)) {
       return 'macOS Zip'
     }
+
     return 'macOS'
   } else if (/\.exe$/.test(name)) {
     return 'Windows'
   }
+
   return 'Others'
 }
 
-function cacheData() {
+const generateMeta = release => {
+  return {
+    tag: release.tag_name,
+    url: release.html_url,
+    assets: release.assets.map(({name}) => ({
+      name,
+      platform: platformFromName(name),
+      url: `https://cdn.zeit.co/releases/now-cli/${release.tag_name}/${name}`
+    }))
+  }
+}
+
+const cacheData = async () => {
   const start = Date.now()
-  fetch('https://api.github.com/repos/zeit/now-cli/releases/latest', {
+  const url = 'https://api.github.com/repos/zeit/now-cli/releases?per_page=100'
+
+  const response = await fetch(url, {
     headers: {
       Accept: 'application/vnd.github.preview'
     }
   })
-  .then(res => {
-    if (res.status !== 200) {
-      return logError('Non-200 response code from GitHub: ' + res.status)
-    }
-    return res.json()
-  })
-  .then(data_ => {
-    if (!data_ || data_.prerelease) {
-      return
-    }
 
-    data = {
-      tag: data_.tag_name,
-      url: data_.html_url,
-      assets: data_.assets.map(({name}) => ({
-        name,
-        platform: platformFromName(name),
-        url: `https://cdn.zeit.co/releases/now-cli/${data_.tag_name}/${name}`
-      }))
-    }
+  if (response.status !== 200) {
+    return logError('Non-200 response code from GitHub: ' + response.status)
+  }
 
-    log(`Re-built now releases cache. ` +
-        `Elapsed: ${(new Date() - start)}ms`)
-  })
-  .catch(err => {
+  let releases
+
+  try {
+    releases = await response.json()
+  } catch (err) {
     logError('Error parsing response from GitHub: ' + err.stack)
-  })
+    return
+  }
+
+  const canary = releases.find(item => Boolean(item.prerelease))
+  const stable = releases.find(item => !item.prerelease)
+
+  if (canary) {
+    cache.canary = generateMeta(canary)
+  }
+
+  if (stable) {
+    cache.stable = generateMeta(stable)
+  }
+
+  log(`Re-built Now CLI releases cache. ` +
+  `Elapsed: ${(new Date() - start)}ms`)
 }
+
+// Cache releases now
+cacheData()
+
+// ... and every 15 minutes
+setInterval(cacheData, ms('15m'))
