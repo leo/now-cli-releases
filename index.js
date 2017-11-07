@@ -20,6 +20,10 @@ const slack = (text, id) => {
   })
 }
 
+const isCanary = ({tag_name}) => {
+  return tag_name.includes('canary')
+}
+
 const log = text => slack(text, process.env.TOKEN_EVENTS)
 const logError = text => slack(text, process.env.TOKEN_ALERTS)
 
@@ -87,11 +91,11 @@ const cacheData = async () => {
   const canary = releases.find(item => Boolean(item.prerelease))
   const stable = releases.find(item => !item.prerelease)
 
-  if (canary) {
+  if (canary && isCanary(canary)) {
     cache.canary = generateMeta(canary)
   }
 
-  if (stable) {
+  if (stable && !isCanary(stable)) {
     cache.stable = generateMeta(stable)
   }
 
