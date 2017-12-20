@@ -106,5 +106,5 @@ const cacheData = async () => {
 // Cache releases now
 cacheData()
 
-// ... and every 15 minutes
-setInterval(cacheData, ms('15m'))
+// ... and every 5 minutes
+setInterval(cacheData, ms('5m'))
