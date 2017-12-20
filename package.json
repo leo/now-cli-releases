@@ -1,7 +1,7 @@
 {
   "name": "now-cli-releases",
   "private": true,
-  "version": "3.0.2",
+  "version": "3.0.3",
   "scripts": {
     "start": "micro",
     "dev": "micro-dev",
