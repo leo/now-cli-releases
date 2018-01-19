@@ -19,12 +19,12 @@
     "alias": "now-cli-releases.zeit.sh"
   },
   "dependencies": {
-    "micro": "9.0.2",
+    "micro": "9.1.0",
     "ms": "2.1.1",
     "node-fetch": "1.7.3"
   },
   "devDependencies": {
-    "micro-dev": "2.1.1",
+    "micro-dev": "2.2.0",
     "xo": "0.18.2"
   }
 }
