@@ -60,7 +60,7 @@ const generateMeta = release => {
     assets: release.assets.map(({name}) => ({
       name,
       platform: platformFromName(name),
-      url: `https://assets.zeit.co/raw/upload/now-cli/${release.tag_name}/${name}.gz`
+      url: `https://assets.zeit.co/raw/upload/now-cli/${release.tag_name}/${name}`
     }))
   }
 }
