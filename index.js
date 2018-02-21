@@ -41,7 +41,7 @@ const platformFromName = name => {
     }
   }
 
-  return 'Others'
+  return 'Other'
 }
 
 const generateMeta = release => {
