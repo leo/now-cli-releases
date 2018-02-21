@@ -28,26 +28,17 @@ const log = text => slack(text, process.env.TOKEN_EVENTS)
 const logError = text => slack(text, process.env.TOKEN_ALERTS)
 
 const platformFromName = name => {
-  if (/\.dmg$/.test(name)) {
-    return 'macOS DMG'
-  } else if (/\.AppImage$/.test(name)) {
-    return 'AppImage'
-  } else if (/\.rpm$/.test(name)) {
-    return 'Fedora/RedHat'
-  } else if (/\.deb$/.test(name)) {
-    return 'Ubuntu/Debian'
-  } else if (/\blinux\b/.test(name)) {
-    return 'Linux (glibc)'
-  } else if (/\balpine\b/.test(name)) {
-    return 'Alpine (musl)'
-  } else if (/\bmacos\b/.test(name) || /\bmac\b/.test(name)) {
-    if (/\.zip$/.test(name)) {
-      return 'macOS Zip'
-    }
+  const spec = {
+    mac: 'macOS',
+    win: 'Windows',
+    alpine: 'Alpine (musl)',
+    linux: 'Linux (glibc)'
+  }
 
-    return 'macOS'
-  } else if (/\.exe$/.test(name)) {
-    return 'Windows'
+  for (const platform of Object.keys(spec)) {
+    if (name.includes(platform)) {
+      return spec[platform]
+    }
   }
 
   return 'Others'
