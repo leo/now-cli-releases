@@ -15,10 +15,8 @@
       "camelcase": 0
     }
   },
-  "now": {
-    "alias": "now-cli-releases.zeit.sh"
-  },
   "dependencies": {
+    "encoding": "0.1.12",
     "micro": "9.1.0",
     "ms": "2.1.1",
     "node-fetch": "2.0.0"

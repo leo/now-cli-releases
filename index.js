@@ -4,14 +4,7 @@ const ms = require('ms')
 
 // This is where we're keeping the cached
 // releases in the RAM
-const cache = {}
-
-module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET')
-
-  return cache
-}
+let cache = null
 
 const slack = (text, id) => {
   fetch(`https://hooks.slack.com/services/${id}`, {
@@ -56,7 +49,8 @@ const generateMeta = release => {
   }
 }
 
-const cacheData = async () => {
+const getContent = async () => {
+  const content = {}
   const start = Date.now()
   const url = 'https://api.github.com/repos/zeit/now-cli/releases?per_page=100'
 
@@ -83,19 +77,29 @@ const cacheData = async () => {
   const stable = releases.find(item => !item.prerelease)
 
   if (canary && isCanary(canary)) {
-    cache.canary = generateMeta(canary)
+    content.canary = generateMeta(canary)
   }
 
   if (stable && !isCanary(stable)) {
-    cache.stable = generateMeta(stable)
+    content.stable = generateMeta(stable)
   }
 
   log(`Re-built Now CLI releases cache. ` +
   `Elapsed: ${(new Date() - start)}ms`)
+
+  content.lastUpdate = Date.now()
+  return content
 }
 
-// Cache releases now
-cacheData()
+module.exports = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET')
 
-// ... and every 5 minutes
-setInterval(cacheData, ms('5m'))
+  // If there is no cache or the cache is old, we need to re-fill it
+  if (!cache || (Date.now() - cache.lastUpdate) > ms('5m')) {
+    cache = await getContent()
+  }
+
+  res.end(JSON.stringify(cache))
+}
+
