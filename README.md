@@ -1,3 +1,9 @@
+------
+
+**DEPRECATED:** This API is now included in [api-zeit](https://github.com/zeit/api-zeit).
+
+------
+
 # now-cli-releases
 
 [![Build Status](https://travis-ci.org/zeit/now-cli-releases.svg?branch=master)](https://travis-ci.org/zeit/now-cli-releases)
